@@ -1,11 +1,10 @@
 # HDTree 
 
 The code includes the following modules:
-* Datasets (Mnist, CIFAR-10, HCL, 20newsgroups)
+* Datasets (Mnist, FMinst, 20News, Limb, Weinreb, ECL)
 * Training for HDTree
 * Evaluation metrics 
-* Visualisation
-* Explainable Analyses
+
 
 ## Configurating python environment
 
