@@ -275,20 +275,13 @@ For validation, you can use the following command:
 download the ckpt file from the [Web Drive](https://gofile.me/7794C/Ap8CoaeyN) and put it in the `ckpt` folder.
 
 ```bash
-python main.py validate -c conf/difftree/C_celegan_1gpu.yaml
-python main.py validate -c conf/difftree/C_Weinreb_1gpu.yaml
-python main.py validate -c conf/difftree/C_ECL_1gpu.yaml
-python main.py validate -c conf/difftree/C_Limb_1gpu.yaml
-python main.py validate -c conf/difftree/C_LHCO_1gpu.yaml
-python main.py validate -c conf/difftree/G_fmnist_1gpu.yaml
 python main.py validate -c conf/difftree/G_mnist_1gpu.yaml
-python main.py validate -c conf/difftree/G_News20_1gpu.yaml
-python main.py validate -c conf/difftree/G_omni_1gpu.yaml
 ```
 
 - `main.py`: The main entry point for HDTree.
 - `validate`: Specifies the training process.
-- `-c ***.ymal`: Specifies the configuration file for the training process.
+- `-c ***.ymal`: Specifies the configuration file for the training process.  
+you can also find the other configs in the `conf/difftree` folder, like `C_Weinreb_1gpu.yaml`, `C_ECL_1gpu.yaml`, etc.
 
 ## 8. files of the project
 
