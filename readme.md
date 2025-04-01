@@ -98,7 +98,7 @@ Biology Data
 
 ```
 
-datasets/
+datasets_bio/
 ├──  original/
 |   ├── EpitheliaCell.h5ad
 |   ├── LimbFilter.h5ad
@@ -106,8 +106,8 @@ datasets/
 |   ├── Weinreb_inVitro_clone_matrix.mtx
 |   ├── Weinreb_inVitro_gene_names.txt
 |   ├── Weinreb_inVitro_metadata.txt
-|   └──  Weinreb_inVitro_normed_counts.mtx
-└── processed/
+|   └── Weinreb_inVitro_normed_counts.mtx
+└── processed/  (it existes untill you run the process)
     ├── EpitheliaCell_data_n.npy
     ├── EpitheliaCell_label.npy
     ├── LimbFilter_data_n.npy
@@ -142,10 +142,10 @@ For biological datasets (**LHCO**, **Limb**, **Weinreb**, **ECL**), preprocessin
 1. **Data cleaning**:
    - Remove duplicate entries and invalid samples.
    - Handle missing values by performing imputation or filtering rows with excessive missing data.
-2. **4.2.1 Feature extraction**:
-   - Extract relevant features from the raw data, such as particle kinematics or event-level features.
+2. **Feature extraction**:
+   - Extract relevant features from the raw data, such as particle kinematics or event-level feaThe detail code is shown in 'preprocess/pre_lhco.py'tures.
    - Apply feature scaling (e.g., standardization or normalization).
-3. **4.2.1 Splitting**:
+3. **Splitting**:
    - Split the dataset into training, validation, and test sets based on configurations.
 
 The detail code is shown in 'preprocess/pre_lhco.py'
@@ -163,6 +163,8 @@ The detail code is shown in 'preprocess/pre_lhco.py'
 4. **Splitting**:
    - Stratify the dataset into training, validation, and test splits to maintain label distribution.
 
+The detail code is shown in 'preprocess/pre_limb.py'
+
 #### **4.2.3 Weinreb**
 
 1. **Data transformation**:
@@ -174,6 +176,8 @@ The detail code is shown in 'preprocess/pre_lhco.py'
    - Perform batch effect correction if the data comes from multiple sources.
 4. **Splitting**:
    - Divide the dataset into training, validation, and test sets, ensuring balanced cell-type distributions.
+
+The detail code is shown in 'preprocess/pre_weinreb.py'
 
 #### **4.2.4 ECL**
 
@@ -187,17 +191,27 @@ The detail code is shown in 'preprocess/pre_lhco.py'
 4. **Splitting**:
    - Ensure the dataset is split into training, validation, and test subsets while maintaining class balance.
 
+The detail code is shown in 'preprocess/pre_ecl.py'
+
 ## 5 Baseline Methods
 
 #### **5.1 TreeVAE**
 
+The TreeVAE is installed as follow
+
+```bash
+git clone https://github.com/lauramanduchi/treevae.git
+cd treevae
+pip install -r minimal_requirements.txt
+```
+
+We run the TreeVAE with differnent configs, the details coinfigs refer to 'baseline/treevae_cfgs'
 
 #### 5.2 CellPLM
 
 The CellPLM is installed as follow:
 
 ```bash
-bash
 git clone https://github.com/OmicsML/CellPLM.git
 cd CellPLM
 conda install cudatoolkit=11.7 -c pytorch -c nvidia
@@ -206,16 +220,31 @@ pip install -r requirements.txt
 
 We use the CellPLM like official [tutorials](https://github.com/OmicsML/CellPLM/blob/main/tutorials/cell_embedding.ipynb) in the [CelllPLM](https://github.com/OmicsML/CellPLM.git)
 
+The details you can refer to 'baseline/CellPLM.py'
 
 #### **5.3 LangCell**
 
+The LangCell is installed as follow.
+
+```bash
+git clone https://github.com/PharMolix/LangCell.git
+pip install -r requirements.txt
+cd LangCell
+cd geneformer_001
+pip install .
+```
+
 We use the LangCell like offical [tutorials](https://github.com/PharMolix/LangCell/blob/main/LangCell-annotation-zeroshot/zero-shot.ipynb) in the [LangCell](https://github.com/PharMolix/LangCell.git)
 
+The details you can refer to 'baseline/LangCell.py'
 
 #### 5.4 Geneformer
 
+After you install LangCell, the Geneformer is also installed.
+
 We use the Geneformer like offical [tutorials](https://github.com/jkobject/geneformer/blob/main/examples/extract_and_plot_cell_embeddings.ipynb) in the [Geneformer](https://github.com/jkobject/geneformer.git)
 
+The detials you can refer to 'baseline/Geneformer.py'
 
 ## 6. Running HDTree
 
@@ -233,10 +262,10 @@ For validation, you can use the following command:
 
 ```bash
 python main.py validate -c conf/difftree/C_celegan_1gpu.yaml
-python main.py validate -c conf/difftree/C_dral_1gpu.yaml
-python main.py validate -c conf/difftree/C_EpitheliaCell_1gpu.yaml
+python main.py validate -c conf/difftree/C_Weinreb_1gpu.yaml
+python main.py validate -c conf/difftree/C_ECL_1gpu.yaml
 python main.py validate -c conf/difftree/C_Limb_1gpu.yaml
-python main.py validate -c conf/difftree/C_NatureMethod_1gpu.yaml
+python main.py validate -c conf/difftree/C_LHCO_1gpu.yaml
 python main.py validate -c conf/difftree/G_fmnist_1gpu.yaml
 python main.py validate -c conf/difftree/G_mnist_1gpu.yaml
 python main.py validate -c conf/difftree/G_News20_1gpu.yaml

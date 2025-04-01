@@ -81,6 +81,7 @@ class Gast10k1458Dataset(DigitsDataset):
         label = np.array(label_train).astype(np.int32)
         return data, label
 
+
 class SAMUSIKDataset(DigitsDataset):
     def load_data(self, data_path, train=True):
         data = pd.read_csv(data_path+'/samusik_01.csv')
@@ -93,6 +94,7 @@ class SAMUSIKDataset(DigitsDataset):
         label = np.array(label).astype(np.int32)
         # import pdb; pdb.set_trace()
         return data, label
+
 
 class HCL60KDataset(DigitsDataset):
     def load_data(self, data_path, train=True):
@@ -127,7 +129,6 @@ class HCL60KDataset(DigitsDataset):
         
         print(data.shape)
         return data, label
-
 
 
 class HCL60KPLOTDataset(DigitsDataset):
@@ -166,6 +167,7 @@ class HCL60KPLOTDataset(DigitsDataset):
         
         print(data.shape)
         return data, label
+
 
 class HCL600KDataset(DigitsDataset):
     def load_data(self, data_path, train=True):
@@ -229,6 +231,7 @@ class HCL60K1000Dataset(DigitsDataset):
         print(data.shape)
         return data, label
 
+
 class CeleganDataset(DigitsDataset):
     def load_data(self, data_path, train=True):
 
@@ -242,7 +245,7 @@ class CeleganDataset(DigitsDataset):
         label = np.array([label_train_str_set.index(i) for i in label_train_str]).astype(np.int32)
         print(data)
         return data, label
-    
+
 
 class LimbSampleDataset(DigitsDataset):
     def load_data(self, data_path, train=True,filter=True):
@@ -265,7 +268,6 @@ class LimbSampleDataset(DigitsDataset):
         label_train_str_set = sorted(list(set(label_train_str)))
         label = np.array([label_train_str_set.index(i) for i in label_train_str]).astype(np.int32)
         print(data)
-        import pdb; pdb.set_trace()
         return data, label
 
 
@@ -314,9 +316,10 @@ class LimbDataset(DigitsDataset):
         print('label', label.shape)
         return data_n, label
 
-class NatureMethodDataset(DigitsDataset):
+
+class LHCODataset(DigitsDataset):
     def load_data(self, data_path, train=True):
-        adata = sc.read("/any/data/difftreedata/data/He_2022_NatureMethods_Day15.h5ad")
+        adata = sc.read("/any/data/difftreedata/datasets_bio/processed/LHCO.h5ad")
         if filter:
             # sc.pp.subsample(adata, fraction=0.1)
             sc.pp.highly_variable_genes(adata, n_top_genes=500)
@@ -341,9 +344,9 @@ class NatureMethodDataset(DigitsDataset):
         return data, label
 
 
-class DARLINAllDataset(DigitsDataset):
+class WeinrebAllDataset(DigitsDataset):
     def load_data(self, data_path, train=True,filter=True):
-        adata = sc.read("/any/data/difftreedata/data/GSM4185642_stateFate_inVitro.h5ad")
+        adata = sc.read("/any/data/difftreedata/datasets_bio/processed/Weinreb.h5ad")
         
         sc.pp.log1p(adata)
         adata.obs['celltype']=adata.obs['Cell type annotation']
@@ -373,7 +376,7 @@ class DARLINAllDataset(DigitsDataset):
 
 class EpitheliaCellDataset(DigitsDataset):
     def load_data(self, data_path, train=True,filter=True):
-        adata = sc.read(data_path+"/MouseDevelopment/EpitheliaCell.h5ad")
+        adata = sc.read(data_path+"/any/data/difftreedaata/datasets_bio/processed//EpitheliaCell.h5ad")
         adata.obs['celltype']=adata.obs['cell_type']
         adata = adata[~adata.obs['celltype'].isna()]
         if filter:
@@ -393,6 +396,7 @@ class EpitheliaCellDataset(DigitsDataset):
         print('data.shape', data.shape)
         # import pdb; pdb.set_trace()
         return data, label
+
 
 class EpitheliaCell1000GDataset(DigitsDataset):
     def load_data(self, data_path, train=True,filter=True):
@@ -445,8 +449,8 @@ class EpitheliaCell1000GDataset(DigitsDataset):
         # np.save('/any/data/difftreedata/data/EpitheliaCell_data_n.npy', data_n)
         # np.save('/any/data/difftreedata/data/EpitheliaCell_label.npy', label)
 
-        data_n = np.load('/any/data/difftreedata/data/EpitheliaCell_data_n.npy')
-        label = np.load('/any/data/difftreedata/data/EpitheliaCell_label.npy')
+        data_n = np.load('/any/data/difftreedata/datasets_bio/processed/EpitheliaCell_data_n.npy')
+        label = np.load('/any/data/difftreedata/datasets_bio/processed/EpitheliaCell_label.npy')
 
         # import pdb; pdb.set_trace()
 
@@ -454,9 +458,9 @@ class EpitheliaCell1000GDataset(DigitsDataset):
         return data_n, label
 
 
-class DARLINAll1000GDataset(DigitsDataset):
+class WeinrebAll1000GDataset(DigitsDataset):
     def load_data(self, data_path, train=True,filter=True):
-        adata = sc.read(data_path+"/DARLIN/RAW/GSM4185642_stateFate_inVitro.h5ad")
+        adata = sc.read(data_path+"/datasets_bio/processed/Weinreb.h5ad")
         sc.pp.log1p(adata)
         adata.obs['celltype']=adata.obs['Cell type annotation']
         adata = adata[~adata.obs['celltype'].isna()]
