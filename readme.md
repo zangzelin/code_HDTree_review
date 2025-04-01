@@ -1,4 +1,3 @@
-
 # HDTree Documentation
 
 ## 1. Introduction
@@ -10,7 +9,6 @@
 - **Evaluation**: Multiple evaluation metrics to assess the trained model.
 
 This project is built for Python 3.9 and uses `conda` for environment management.
-
 
 ## 2. Environment Setup
 
@@ -26,19 +24,49 @@ bash install.sh
 - `conda activate hdtree`: Activates the **hdtree** environment.
 - `bash install.sh`: Runs the installation script to automatically install all required dependencies.
 
-
 ## 3. Datasets
 
 This project supports the following datasets:
 
 <!-- 这里帮我把每个数据集的下载地址贴上 -->
+
 - MNIST
-- FMINST
+
+http://yann.lecun.com/exdb/mnist/
+
+- Fashion-MINST
+
+https://github.com/zalandoresearch/fashion-mnist
+
 - 20News
+
+http://qwone.com/~jason/20Newsgroups/
+
 - LHCO
+
+https://drctdb.cowtransfer.com/s/cc09cb54750
+
 - Limb
-- Weinreb
-- ECL
+
+https://cellgeni.cog.sanger.ac.uk/limb-dev/221024LimbCellranger3annotated_filtered_adjusted_20221124.minimal.h5ad
+
+- CIFAR-10
+
+https://www.cs.toronto.edu/~kriz/cifar.html
+
+- **Weinreb:**
+
+https://kleintools.hms.harvard.edu/paper_websites/state_fate2020/stateFate_inVitro_gene_names.txt.gz
+
+https://kleintools.hms.harvard.edu/paper_websites/state_fate2020/stateFate_inVitro_metadata.txt.gz
+
+https://kleintools.hms.harvard.edu/paper_websites/state_fate2020/stateFate_inVitro_clone_matrix.mtx.gz
+
+https://kleintools.hms.harvard.edu/paper_websites/state_fate2020/stateFate_inVitro_normed_counts.mtx.gz
+
+- **ECL:**
+
+https://datasets.cellxgene.cziscience.com/1e466ab7-25b4-4540-8bed-b6aa63e28636.h5ad
 
 ### Dataset Organization
 
@@ -48,23 +76,52 @@ For example, the all dataset might be organized as follows:
 
 <!-- 这里帮我把每个数据集的下载地址所下载的位置贴上 -->
 
+Image Data
+
 ```
 datasets/
+├── 
+|
+├── FashionMNIST/
+|   ├──
+|   ├──
+|   ├──
 └── MNIST/
     ├── train-images-idx3-ubyte
     ├── train-labels-idx1-ubyte
     ├── t10k-images-idx3-ubyte
     └── t10k-labels-idx1-ubyte
+
+```
+
+Biology Data
+
+```
+
+datasets/
+├──  original/
+|   ├── EpitheliaCell.h5ad
+|   ├── LimbFilter.h5ad
+|   ├── He_2022_NatureMethods_Day15.h5ad
+|   ├── Weinreb_inVitro_clone_matrix.mtx
+|   ├── Weinreb_inVitro_gene_names.txt
+|   ├── Weinreb_inVitro_metadata.txt
+|   └──  Weinreb_inVitro_normed_counts.mtx
+└── processed/
+    ├── EpitheliaCell_data_n.npy
+    ├── EpitheliaCell_label.npy
+    ├── LimbFilter_data_n.npy
+    ├── LimbFilter_label.npy
+    ├── LHCO.h5ad
+    └── Weinreb.h5ad
+
 ```
 
 Other datasets should follow their respective official structures or be organized using the preprocessing scripts provided in this project.
 
-
-
 ## 4. Preprocessing
 
 Before training, datasets need to be preprocessed. Preprocessing steps differ depending on the type of dataset. Below are the detailed guidelines:
-
 
 ### 4.1. Image Datasets
 
@@ -76,12 +133,12 @@ For image datasets (e.g., **MNIST**, **FMINST**), preprocessing is straightforwa
 
 You can directly use the preprocessing code from the TreeVAE project, located in the `datasets/` folder (e.g., `datasets/mnist.py`).
 
-
 ### 4.2. Biological Datasets
 
 For biological datasets (**LHCO**, **Limb**, **Weinreb**, **ECL**), preprocessing is more complex and tailored to each dataset. Below are the detailed preprocessing steps for each:
 
 #### **4.2.1 LHCO**
+
 1. **Data cleaning**:
    - Remove duplicate entries and invalid samples.
    - Handle missing values by performing imputation or filtering rows with excessive missing data.
@@ -94,6 +151,7 @@ For biological datasets (**LHCO**, **Limb**, **Weinreb**, **ECL**), preprocessin
 The detail code is shown in 'preprocess/pre_lhco.py'
 
 #### **4.2.2 Limb**
+
 1. **Data loading**:
    - Read the dataset from the provided files (e.g., CSV or HDF5 formats).
 2. **Filtering and cleaning**:
@@ -106,6 +164,7 @@ The detail code is shown in 'preprocess/pre_lhco.py'
    - Stratify the dataset into training, validation, and test splits to maintain label distribution.
 
 #### **4.2.3 Weinreb**
+
 1. **Data transformation**:
    - Convert raw gene expression matrices into log-transformed or normalized values (e.g., CPM, TPM, or FPKM).
    - Filter out low-expression genes or cells with insufficient data.
@@ -117,6 +176,7 @@ The detail code is shown in 'preprocess/pre_lhco.py'
    - Divide the dataset into training, validation, and test sets, ensuring balanced cell-type distributions.
 
 #### **4.2.4 ECL**
+
 1. **Loading and parsing**:
    - Parse the raw files (e.g., sequencing or proteomics data) into tabular formats.
 2. **Preprocessing**:
@@ -131,7 +191,30 @@ The detail code is shown in 'preprocess/pre_lhco.py'
 
 #### **5.1 TreeVAE**
 
-#### **5.2 LangCell**
+
+#### 5.2 CellPLM
+
+The CellPLM is installed as follow:
+
+```bash
+bash
+git clone https://github.com/OmicsML/CellPLM.git
+cd CellPLM
+conda install cudatoolkit=11.7 -c pytorch -c nvidia
+pip install -r requirements.txt
+```
+
+We use the CellPLM like official [tutorials](https://github.com/OmicsML/CellPLM/blob/main/tutorials/cell_embedding.ipynb) in the [CelllPLM](https://github.com/OmicsML/CellPLM.git)
+
+
+#### **5.3 LangCell**
+
+We use the LangCell like offical [tutorials](https://github.com/PharMolix/LangCell/blob/main/LangCell-annotation-zeroshot/zero-shot.ipynb) in the [LangCell](https://github.com/PharMolix/LangCell.git)
+
+
+#### 5.4 Geneformer
+
+We use the Geneformer like offical [tutorials](https://github.com/jkobject/geneformer/blob/main/examples/extract_and_plot_cell_embeddings.ipynb) in the [Geneformer](https://github.com/jkobject/geneformer.git)
 
 
 ## 6. Running HDTree
@@ -177,6 +260,3 @@ The project is organized into the following directories:
 - `manifolds`: Contains scoft contrastive learning methods.
 - `model`: Implementation of the HDTree model.
 - `preprocess`: Preprocessing scripts for different datasets.
-
-
-
