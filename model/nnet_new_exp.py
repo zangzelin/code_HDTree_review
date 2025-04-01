@@ -159,7 +159,6 @@ class CustomBertModel(nn.Module):
     def __init__(self, config):
         super(CustomBertModel, self).__init__()
         self.bert = BertModel(config)
-        # 为了直接访问BertEmbeddings和BertEncoder，我们在这里不直接使用self.bert
         self.embeddings = self.bert.embeddings
         self.encoder = self.bert.encoder
         # self.pooler = self.bert.pooler
@@ -171,7 +170,6 @@ class CustomBertModel(nn.Module):
         self.pooler = self.bert.pooler
 
     def forward(self, input_ids, attention_mask=None, token_type_ids=None, position_ids=None, head_mask=None, inputs_embeds=None, encoder_hidden_states=None, encoder_attention_mask=None, mask=None):
-        # Step 1: 使用Bert的嵌入层
         # if inputs_embeds is None:
         #     inputs_embeds = self.embeddings(input_ids=input_ids, position_ids=position_ids, token_type_ids=token_type_ids)
         inputs_embeds = input_ids
@@ -189,13 +187,10 @@ class CustomBertModel(nn.Module):
             encoder_hidden_states=encoder_hidden_states,
             encoder_attention_mask=encoder_attention_mask,
         )
-        # 取编码器的输出
         sequence_output = encoder_outputs['last_hidden_state'] # + fc_out
         # sequence_output = fc_out
         
         pooled_output = self.pooler(sequence_output)
-        
-        # 返回编码器的输出和pooled输出，根据需要返回其他输出
         return pooled_output
 
 
@@ -218,15 +213,15 @@ class TransformerEncoder(nn.Module):
         self.use_moe = use_moe
         # self.num_muti_mask = num_muti_mask
         # config = BertConfig(
-        #     vocab_size=num_input_dim+2,  # 词汇表大小
-        #     # embedding_size=trans_embedding_size,  # 嵌入层大小
-        #     hidden_size=hidden_size,  # 隐藏层大小
-        #     num_hidden_layers=num_layers,  # 隐藏层的数量
-        #     num_attention_heads=num_attention_heads,  # 注意力头的数量
-        #     intermediate_size=intermediate_size,  # 前馈网络的大小
-        #     max_position_embeddings=max_position_embeddings,  # 最大序列长度
-        #     hidden_dropout_prob=hidden_dropout_prob,  # 隐藏层的Dropout概率
-        #     attention_probs_dropout_prob=attention_probs_dropout_prob,  # 注意力层的Dropout概率
+        #     vocab_size=num_input_dim+2,  
+        #     # embedding_size=trans_embedding_size,  
+        #     hidden_size=hidden_size,  
+        #     num_hidden_layers=num_layers,  
+        #     num_attention_heads=num_attention_heads,  
+        #     intermediate_size=intermediate_size,  
+        #     max_position_embeddings=max_position_embeddings,  
+        #     hidden_dropout_prob=hidden_dropout_prob,  
+        #     attention_probs_dropout_prob=attention_probs_dropout_prob,  
         #     # num_hidden_layers=num_layers_Transformer,
         # )
         # self.enc = CustomBertModel(config)
@@ -445,13 +440,7 @@ class DMTEVT_model(LightningModule):
     #     return loss_fp*w_fp, loss_NB*w_nb
 
     def t_distribution_similarity(self, distance_matrix, df):
-        """
-        计算 t 分布相似度矩阵
-        :param distance_matrix: 输入距离矩阵，形状为 [N, N]
-        :param df: 自由度
-        :return: 相似度矩阵，形状为 [N, N]
-        """
-        # 计算 t 分布的相似度矩阵
+
         distance_matrix = distance_matrix+1e-6
         numerator = (1 + distance_matrix ** 2 / df) ** (-(df + 1) / 2)
         denominator = torch.sum(numerator, dim=1, keepdim=True) - torch.diagonal(numerator, 0).unsqueeze(1)
@@ -512,13 +501,11 @@ class DMTEVT_model(LightningModule):
         features_sample = features[:100]
         # Flatten batch and feature dimensions
         
-        # 组内
         features_sample_intra = features_sample.permute(1, 0, 2).mean(1)
         distance_matrix = torch.cdist(features_sample_intra, features_sample_intra, p=2)/10
         similarity_matrix = self.t_distribution_similarity(distance_matrix, 1)
         orthogonality_loss = torch.mean(similarity_matrix)
 
-        # 组间
         # import pdb; pdb.set_trace()
         features_sample_inter = features_sample.permute(1, 0, 2)
         for i in range(features_sample_inter.shape[0]):
@@ -543,9 +530,7 @@ class DMTEVT_model(LightningModule):
 
 
     def batch_orthogonal_loss(self, batch_u, batch_v):
-        # 计算批量向量的点积，假设batch_u和batch_v的形状为[N, D]，其中N是批量大小，D是向量维度
         cosine_sims = F.cosine_similarity(batch_u, batch_v, dim=1)
-        # 返回余弦相似度平方的平均值作为损失
         loss = torch.mean(cosine_sims ** 2)
         return loss
 
@@ -554,25 +539,20 @@ class DMTEVT_model(LightningModule):
         feature_tra = feature_tra + torch.randn_like(feature_tra)*0.001*feature_tra.std()
         
         # feature_tra = feature_tra + torch.randn_like(feature_tra) * 0.001 * feature_tra.std()
-        # 处理每个样本中的所有向量
         norms = feature_tra.norm(dim=2, keepdim=True)
         norms = torch.where(norms == 0, torch.tensor(1.0, device=feature_tra.device), norms)  # 避免除以0
         norm_vectors = feature_tra / norms
 
-        # 计算每个样本的相似度矩阵
         similarity_matrices = torch.einsum('bij,bkj->bik', norm_vectors, norm_vectors)
         similarity_matrices = torch.clamp(similarity_matrices, min=-1.0, max=1.0)
 
-        # 计算平均相似度并累积损失
         sim_means = 1 - similarity_matrices.mean(dim=(1, 2))
         loss_in = sim_means.mean()
 
-        # 处理每组中的所有向量
-        norm_vectors = norm_vectors.permute(1, 0, 2)  # 将形状从 (batch_size, num_vectors_per_group, vector_dim) 变为 (num_vectors_per_group, batch_size, vector_dim)
+        norm_vectors = norm_vectors.permute(1, 0, 2)  
         similarity_matrices = torch.einsum('bij,bkj->bik', norm_vectors, norm_vectors)
         similarity_matrices = torch.clamp(similarity_matrices, min=-1.0, max=1.0)
 
-        # 计算平均相似度并累积损失
         sim_means = 1 - similarity_matrices.mean(dim=(1, 2))
         loss_cr = sim_means.mean()
         
@@ -640,15 +620,6 @@ class DMTEVT_model(LightningModule):
     
     
     def get_tau(self, epoch, total_epochs=900, tau_start=100, tau_end=1.001):
-        """
-        计算指定 epoch 的 tau 值。
-        
-        :param epoch: 当前的 epoch 数 (从0开始)
-        :param total_epochs: 总的 epoch 数
-        :param tau_start: 开始的 tau 值
-        :param tau_end: 结束的 tau 值
-        :return: 计算得到的 tau 值
-        """
         if epoch >= total_epochs:
             return tau_end
         else:    

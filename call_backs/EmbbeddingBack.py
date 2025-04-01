@@ -13,7 +13,7 @@ from sklearn.metrics import normalized_mutual_info_score, adjusted_rand_score
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
-from sklearn.neighbors import KNeighborsClassifier  # 导入KNN分类器
+from sklearn.neighbors import KNeighborsClassifier  
 from collections import Counter
 
 from lightning.pytorch.callbacks import Callback
@@ -725,18 +725,15 @@ class EmbbeddingBack(Callback):
         X_train_scaled = scaler.fit_transform(X_train)
         X_test_scaled = scaler.transform(X_test)
 
-        # 创建 SVM 模型 (这里选择线性核函数作为例子)
         svm_model = SVC(kernel='linear', probability=True, random_state=42)
 
-        # 训练模型
         svm_model.fit(X_train_scaled, y_train)
 
-        # 预测测试集
         preds = svm_model.predict(X_test_scaled)
 
         metrics = self.calculate_metrics_Annontation(preds, y_test)
         print(metrics)
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         # print(f"Metrics for {args.embedding_method}:")
         # for metric, value in metrics.items():
         #     print(f"{metric}: {value:.4f}")

@@ -46,4 +46,6 @@ def process_werinreb(input_path="datasets_bio/original/",output_path="datasets_b
     label_train_str_set = sorted(list(set(label_train_str)))
     label = np.array([label_train_str_set.index(i) for i in label_train_str]).astype(np.int32)
     return data, label
+
+
 process_werinreb()

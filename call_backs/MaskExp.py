@@ -23,7 +23,7 @@ class MaskExpCallBack(Callback):
 
 
     def on_validation_batch_end(self, trainer, pl_module, outputs, batch, batch_idx, dataloader_idx=0):
-        # preds = pl_module.step_last_outputs_val  # 假设模型的输出字典中包含预测结果
+        # preds = pl_module.step_last_outputs_val  
         # data_input_item, data_input_aug, label, index, = batch
         if dataloader_idx==0:
             data_input_item = batch["data_input_item"]

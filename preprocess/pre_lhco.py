@@ -31,4 +31,6 @@ def process_lhco(input_path="datasets_bio/original/",output_path="datasets_bio/p
     label = np.array([label_train_str_set.index(i) for i in label_train_str]).astype(np.int32)
     print('data.shape', data.shape)
     return data, label
+
+
 process_lhco()

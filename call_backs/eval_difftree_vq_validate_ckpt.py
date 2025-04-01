@@ -36,7 +36,6 @@ from call_backs.util import (
 from sklearn.metrics.cluster import normalized_mutual_info_score, adjusted_rand_score
 
 
-# 计算Reconstruction Loss
 def compute_reconstruction(gathered_rec, gathered_input):
     mean = gathered_input.min()
     std = gathered_input.max() - mean
@@ -46,44 +45,26 @@ def compute_reconstruction(gathered_rec, gathered_input):
     return rl
 
 
-# 计算Log-Likelihood
 def compute_log_likelihood(reconstructed_data, original_data, estimation_samples=100, device='cpu'):
-    """
-    计算测试集的边际对数似然 (marginal_log_likelihood)。
-    
-    参数:
-        reconstructed_data (torch.Tensor): 重建后的数据 (N, D)。
-        original_data (torch.Tensor): 原始数据 (N, D)。
-        estimation_samples (int): 采样次数，用于近似边际似然。
-        device (str): 使用的计算设备 ("cpu" 或 "cuda")。
-
-    返回:
-        float: 平均边际对数似然 (marginal_log_likelihood)。
-    """
     import torch
     import scipy
     import numpy as np
     from tqdm import tqdm
 
-    # 初始化负 ELBO 矩阵
     num_samples = original_data.shape[0]
     elbo = np.zeros((num_samples, estimation_samples))
 
     # print('\nComputing the marginal log-likelihood...')
 
-    # 对每个样本进行估计
     for j in tqdm(range(estimation_samples)):
-        # 计算重建误差（例如均方误差或负对数似然）
         reconstruction_error = torch.nn.functional.mse_loss(
             torch.tensor(reconstructed_data), 
             torch.tensor(original_data), 
             reduction='none'
-        ).sum(dim=1).detach().cpu().numpy()  # 对每个样本求和
+        ).sum(dim=1).detach().cpu().numpy()  
 
-        # 使用 reconstruction_error 近似负 ELBO
         elbo[:, j] = reconstruction_error
 
-    # 计算边际对数似然
     log_likel = np.log(1 / estimation_samples) + scipy.special.logsumexp(-elbo, axis=1)
     marginal_log_likelihood = np.sum(log_likel) / num_samples
 
@@ -419,7 +400,7 @@ class EvalCallBack(Callback):
                         color="red",
                         symbol="star",
                     ),
-                    textposition="top center",  # 控制文字相对于节点的显示位置
+                    textposition="top center",  
                     textfont=dict(size=12, color="black"),
                     name="token_emb",
                 )
@@ -467,14 +448,14 @@ class EvalCallBack(Callback):
                 )
 
             plotly_fig_rute.update_layout(
-                plot_bgcolor="white",  # 设置绘图区域背景为白色
-                paper_bgcolor="white",  # 设置整个图表区域背景为白色
-                width=800,  # 图表宽度（像素）
-                height=600,  # 图表高度（像素）
+                plot_bgcolor="white",  
+                paper_bgcolor="white",  
+                width=800,  
+                height=600,  
                 title="Tree Visualization",
-                xaxis=dict(visible=False),  # 隐藏 x 轴
-                yaxis=dict(visible=False),  # 隐藏 y 轴
-                xaxis_scaleanchor="y",  # 锁定 x 和 y 的比例
+                xaxis=dict(visible=False),  
+                yaxis=dict(visible=False),  
+                xaxis_scaleanchor="y",  
                 yaxis_scaleanchor="x",
                 legend=dict(title="Legend", x=0.01, y=0.99),
             )
@@ -663,7 +644,7 @@ class EvalCallBack(Callback):
                     #     set_str=f'dim_{gathered_high.shape[1]}_{val_idx}'
                     #     )
 
-                    # node_root = TreeNode(decoder=True, samples=node_index)  # 样本 0, 1, 2 在这个叶子
+                    # node_root = TreeNode(decoder=True, samples=node_index)  
                     # print(
                     #     "Evaluating the tree structure, building the tree...",
                     #     pl_module.training_str,

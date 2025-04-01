@@ -28,8 +28,6 @@ bash install.sh
 
 This project supports the following datasets:
 
-<!-- 这里帮我把每个数据集的下载地址贴上 -->
-
 - MNIST
 
 http://yann.lecun.com/exdb/mnist/
@@ -73,8 +71,6 @@ https://datasets.cellxgene.cziscience.com/1e466ab7-25b4-4540-8bed-b6aa63e28636.h
 Ensure that datasets are placed in the appropriate directory or downloaded to the default directory, as configured in the project’s configuration files.
 
 For example, the all dataset might be organized as follows:
-
-<!-- 这里帮我把每个数据集的下载地址所下载的位置贴上 -->
 
 Image Data
 

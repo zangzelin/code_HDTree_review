@@ -20,75 +20,21 @@ def kmeans_numpy(X: np.ndarray,
                  tol: float = 1e-4,
                  random_state: int = 0,
                  verbose: bool = False):
-    """
-    使用 NumPy 实现的简易 KMeans 算法
-
-    参数:
-    -------
-    X: np.ndarray
-        输入数据，形状为 [N, D]，N 为样本数，D 为特征维度。
-    n_clusters: int
-        聚类簇的数量。
-    max_iter: int, default=100
-        最大迭代次数。
-    tol: float, default=1e-4
-        用于判断中心变化量是否小于该阈值从而提前停止迭代。
-    random_state: int, default=0
-        随机种子，方便复现。
-    verbose: bool, default=False
-        是否打印每次迭代的信息。
-
-    返回:
-    -------
-    labels: np.ndarray
-        每个样本的聚类标签，形状为 [N]。
-    centers: np.ndarray
-        最终聚类中心，形状为 [n_clusters, D]。
-    """
-    # ---------------------------------------------------------
-    # 1. 数据准备
-    # ---------------------------------------------------------
     np.random.seed(random_state)
-    X = X.astype(np.float32)  # 确保为 float 类型
+    X = X.astype(np.float32)  
     N, D = X.shape
-
-    # ---------------------------------------------------------
-    # 2. 初始化中心
-    # ---------------------------------------------------------
-    # 随机从 X 中选取 n_clusters 个样本作为初始中心
     initial_idxs = np.random.choice(N, n_clusters, replace=False)
     centers = X[initial_idxs].copy()
-
-    # 用于存储上一轮迭代的中心
     old_centers = np.zeros_like(centers)
-
-    # ---------------------------------------------------------
-    # 3. 迭代更新
-    # ---------------------------------------------------------
     for i in range(max_iter):
-        # a) 计算每个样本到各中心的距离
-        # distance: [N, n_clusters]
-        # distances[n, k]: 第 n 个样本到第 k 个中心的距离
-        # 这里可以使用广播技巧，也可以直接做循环
-        # 为了简洁，这里直接用广播 (X[:, None, :] - centers[None, :, :])**2
-        # 并在最后再对特征维度进行 sum 和 sqrt
         distances = np.sqrt(((X[:, None, :] - centers[None, :, :]) ** 2).sum(axis=2))
-
-        # b) 根据最小距离分配标签
         labels = np.argmin(distances, axis=1)
-
-        # c) 更新聚类中心
         for k in range(n_clusters):
-            # 找到分到第 k 簇的所有数据点
             cluster_points = X[labels == k]
             if len(cluster_points) > 0:
                 centers[k] = np.mean(cluster_points, axis=0)
             else:
-                # 如果某个簇为空，可根据需要重新随机或其他策略
-                # 这里简单跳过不做特殊处理
                 pass
-
-        # d) 判断是否收敛（中心移动量）
         center_shift = np.sqrt(((centers - old_centers) ** 2).sum())
         
         if verbose:
