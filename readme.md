@@ -42,6 +42,10 @@ https://github.com/zalandoresearch/fashion-mnist
 
 http://qwone.com/~jason/20Newsgroups/
 
+- CIFAR-10
+
+https://www.cs.toronto.edu/~kriz/cifar.html
+
 - LHCO
 
 https://drctdb.cowtransfer.com/s/cc09cb54750
@@ -49,10 +53,6 @@ https://drctdb.cowtransfer.com/s/cc09cb54750
 - Limb
 
 https://cellgeni.cog.sanger.ac.uk/limb-dev/221024LimbCellranger3annotated_filtered_adjusted_20221124.minimal.h5ad
-
-- CIFAR-10
-
-https://www.cs.toronto.edu/~kriz/cifar.html
 
 - **Weinreb:**
 
@@ -80,18 +80,34 @@ Image Data
 
 ```
 datasets/
-├── 
-|
+├── MNIST/
+│   ├── train-images-idx3-ubyte
+│   ├── train-labels-idx1-ubyte
+│   ├── t10k-images-idx3-ubyte
+│   └── t10k-labels-idx1-ubyte
 ├── FashionMNIST/
-|   ├──
-|   ├──
-|   ├──
-└── MNIST/
-    ├── train-images-idx3-ubyte
-    ├── train-labels-idx1-ubyte
-    ├── t10k-images-idx3-ubyte
-    └── t10k-labels-idx1-ubyte
-
+│   ├── train-images-idx3-ubyte
+│   ├── train-labels-idx1-ubyte
+│   ├── t10k-images-idx3-ubyte
+│   └── t10k-labels-idx1-ubyte
+├── 20news/
+│   ├── alt.atheism/
+│   │   ├── 12345.txt
+│   │   ├── 67890.txt
+│   │   └── ...
+│   ├── comp.graphics/
+│   │   ├── 12346.txt
+│   │   ├── 67891.txt
+│   │   └── ...
+│   └── ...
+└── cifar-10-batches-py/
+    ├── data_batch_1
+    ├── data_batch_2
+    ├── data_batch_3
+    ├── data_batch_4
+    ├── data_batch_5
+    ├── test_batch
+    └── batches.meta
 ```
 
 Biology Data
