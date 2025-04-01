@@ -3,7 +3,7 @@ seed_everything: 42
 data:
   class_path: data_model.datamodel_tri_test.MyDataModule
   init_args:
-    data_name: NatureMethod
+    data_name: WeinrebAll
     pca_dim: 64
     batch_size: 2000
     num_workers: 10
@@ -65,14 +65,14 @@ trainer:
         inter: 20
         dirpath: 'zzl_checkpoints/'
         fully_eval: False
-        dataset: 'mnist_4gpu'        
+        dataset: 'dral_4gpu'        
         vis_rout: True
         save_results: True
         # datatype: LHCO
     # - class_path: call_backs.MaskExp.MaskExpCallBack
     #   init_args:
     #     inter: 100
-  max_epochs: 2000
+  max_epochs: 1000
   devices: 1
   accelerator: gpu
   # strategy: ddp_find_unused_parameters_true
