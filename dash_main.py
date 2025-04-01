@@ -34,8 +34,8 @@ app.layout = html.Div([
     html.Div([
         dcc.Graph(id='heatmap1', figure=heatmap_fig),
     ], style={'width': '30%', 'display': 'inline-block', 'vertical-align': 'top'}),
-    dcc.Store(id='encoded-images-store', data=encoded_images),  # 存储 encoded_images 数据
-    dcc.Store(id='encoded_images_exp-store', data=encoded_images_exp)  # 存储 encoded_images_exp 数据
+    dcc.Store(id='encoded-images-store', data=encoded_images), 
+    dcc.Store(id='encoded_images_exp-store', data=encoded_images_exp)  
 ])
 
 @app.callback(
@@ -49,9 +49,9 @@ def update_heatmap1(clickData, encoded_images):
     if clickData is None:
         raise dash.exceptions.PreventUpdate
 
-    point_index = clickData['points'][0]['customdata']  # 获取点击点的索引
+    point_index = clickData['points'][0]['customdata'] 
     # print(clickData['points'][0]['text'], "clickData['points'][0]['text']")
-    # selected_image = encoded_images[point_index]  # 获取对应的图像数据
+    # selected_image = encoded_images[point_index] 
 
     if 'Label' in clickData['points'][0]['text']:
         heatmap_fig = go.Figure(data=go.Heatmap(z=point_index, colorscale='Greys'))

@@ -215,17 +215,6 @@ class EvalCallBack(Callback):
         return label_predict
 
     def plot_arrow(self, fig, x0, y0, x1, y1, arrow_size=0.05, color="rgba(0, 0, 255, 0.5)"):
-        """
-        在图中绘制一个箭头，使用 Scatter 实现。
-        
-        :param fig: Plotly 图对象
-        :param x0: 箭头起点的 x 坐标
-        :param y0: 箭头起点的 y 坐标
-        :param x1: 箭头终点的 x 坐标
-        :param y1: 箭头终点的 y 坐标
-        :param arrow_size: 箭头大小
-        """
-        # 添加箭头线
         fig.add_trace(
             go.Scatter(
                 x=[x0, x1],
@@ -236,7 +225,7 @@ class EvalCallBack(Callback):
             )
         )
 
-        # 计算箭头三角形坐标
+        
         dx, dy = x1 - x0, y1 - y0
         arrow_norm = (dx**2 + dy**2)**0.5
         dx /= arrow_norm
@@ -246,7 +235,6 @@ class EvalCallBack(Callback):
         arrow_x = [x1, x1 - arrow_size * (dx + dy), x1 - arrow_size * (dx - dy)]
         arrow_y = [y1, y1 - arrow_size * (dy - dx), y1 - arrow_size * (dy + dx)]
 
-        # 添加箭头头部（三角形）
         fig.add_trace(
             go.Scatter(
                 x=arrow_x,
@@ -362,7 +350,7 @@ class EvalCallBack(Callback):
                         color='red', 
                         symbol='star',
                         ),
-                    textposition="top center",     # 控制文字相对于节点的显示位置
+                    textposition="top center",     
                     textfont=dict(
                             size=12,
                             color="black"
@@ -402,18 +390,18 @@ class EvalCallBack(Callback):
                 self.plot_path(G, tree_node_embedding, i, near_index, end_node, plotly_fig_rute)
 
             plotly_fig_rute.update_layout(
-                plot_bgcolor='white',   # 设置绘图区域背景为白色
-                paper_bgcolor='white',  # 设置整个图表区域背景为白色
-                width=800,   # 图表宽度（像素）
-                height=600,   # 图表高度（像素）
+                plot_bgcolor='white',   
+                paper_bgcolor='white',  
+                width=800,   
+                height=600,   
                 title="Tree Visualization",
                 xaxis=dict(
-                    visible=False  # 隐藏 x 轴
+                    visible=False 
                 ),
                 yaxis=dict(
-                    visible=False  # 隐藏 y 轴
+                    visible=False 
                 ),
-                xaxis_scaleanchor="y",  # 锁定 x 和 y 的比例
+                xaxis_scaleanchor="y",  
                 yaxis_scaleanchor="x",
                 legend=dict(
                     title="Legend",
