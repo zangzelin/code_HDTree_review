@@ -93,7 +93,7 @@ For biological datasets (**LHCO**, **Limb**, **Weinreb**, **ECL**), preprocessin
 
 The detail code is shown in 'preprocess/pre_lhco.py'
 
-#### **Limb**
+#### **4.2.2 Limb**
 1. **Data loading**:
    - Read the dataset from the provided files (e.g., CSV or HDF5 formats).
 2. **Filtering and cleaning**:
@@ -105,7 +105,7 @@ The detail code is shown in 'preprocess/pre_lhco.py'
 4. **Splitting**:
    - Stratify the dataset into training, validation, and test splits to maintain label distribution.
 
-#### **Weinreb**
+#### **4.2.3 Weinreb**
 1. **Data transformation**:
    - Convert raw gene expression matrices into log-transformed or normalized values (e.g., CPM, TPM, or FPKM).
    - Filter out low-expression genes or cells with insufficient data.
@@ -116,7 +116,7 @@ The detail code is shown in 'preprocess/pre_lhco.py'
 4. **Splitting**:
    - Divide the dataset into training, validation, and test sets, ensuring balanced cell-type distributions.
 
-#### **ECL**
+#### **4.2.4 ECL**
 1. **Loading and parsing**:
    - Parse the raw files (e.g., sequencing or proteomics data) into tabular formats.
 2. **Preprocessing**:
@@ -127,9 +127,14 @@ The detail code is shown in 'preprocess/pre_lhco.py'
 4. **Splitting**:
    - Ensure the dataset is split into training, validation, and test subsets while maintaining class balance.
 
+## 5 Baseline Methods
+
+#### **5.1 TreeVAE**
+
+#### **5.2 LangCell**
 
 
-## Running HDTree
+## 6. Running HDTree
 
 ### Minimal Reproducible Example
 
