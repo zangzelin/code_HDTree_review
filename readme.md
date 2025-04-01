@@ -1,14 +1,21 @@
-# HDTree 
 
-The code includes the following modules:
-* Datasets (Mnist, FMinst, 20News, Limb, Weinreb, ECL)
-* Training for HDTree
-* Evaluation metrics 
+# HDTree Documentation
 
+## Introduction
 
-## Configurating python environment
+**HDTree** is a toolkit designed for obtaining high-dimensional data representations in a tree-structured latent space. It includes the following key components:
 
-We recommend using conda for configuration. You can refer to our `install.sh` to configure the environment.
+- **Datasets**: Tools for downloading, managing, and preprocessing datasets (e.g., MNIST, FMINST, 20News, Limb, Weinreb, ECL).
+- **Training**: Implementation of the HDTree model's training process.
+- **Evaluation**: Multiple evaluation metrics to assess the trained model.
+
+This project is built for Python 3.9 and uses `conda` for environment management.
+
+---
+
+## Environment Setup
+
+It is recommended to use Anaconda (or Miniconda) to set up the Python environment. Follow these steps to install and manage dependencies:
 
 ```bash
 conda create -n hdtree python=3.9
@@ -16,29 +23,76 @@ conda activate hdtree
 bash install.sh
 ```
 
-## Dataset
+- `conda create -n hdtree python=3.9`: Creates a conda environment named **hdtree** with Python 3.9.
+- `conda activate hdtree`: Activates the **hdtree** environment.
+- `bash install.sh`: Runs the installation script to automatically install all required dependencies.
 
-This project utilizes several datasets, including `20NG`, `HCL`, `MNIST`, and `CIFAR-10`. Please follow the instructions below to understand the dataset structure and usage.
+---
 
-### 1. 20NG Dataset
-The `20NG` dataset is already included in this GitHub repository.
+## Datasets
 
-### 2. HCL Dataset
-The `HCL` dataset must be manually downloaded from the following link: [Download HCL Dataset](https://gofile.me/7794C/rSolqImMJ). Once downloaded, please place the file `HCL60kafter-elis-all.h5ad` into the `data_path/` directory.
+This project supports the following datasets:
 
-### 3. MNIST and CIFAR-10 Datasets
-The `MNIST` and `CIFAR-10` datasets do not require manual download. These datasets will be automatically downloaded upon the first execution of the project.
-Please ensure that you have a stable internet connection during the first run to automatically download these datasets.
+- MNIST
+- FMINST
+- 20News
+- LHCO
+- Limb
+- Weinreb
+- ECL
 
-## Run HDTree
+### Dataset Organization
 
-You can run HDTree with a single line of code to get latent embedding.
+Ensure that datasets are placed in the appropriate directory or downloaded to the default directory, as configured in the project’s configuration files.
 
-### Minimun replication
+For example, the MNIST dataset might be organized as follows:
 
-Running minimal replication can be done with the following command:
+```
+datasets/
+└── MNIST/
+    ├── train-images-idx3-ubyte
+    ├── train-labels-idx1-ubyte
+    ├── t10k-images-idx3-ubyte
+    └── t10k-labels-idx1-ubyte
+```
+
+Other datasets should follow their respective official structures or be organized using the preprocessing scripts provided in this project.
+
+---
+
+## Preprocessing
+
+Before training, datasets need to be preprocessed. Typical preprocessing steps include:
+
+1. **Converting raw data** into directly loadable formats (e.g., NumPy arrays).
+2. **Data cleaning and filtering**, such as deduplication and handling missing values.
+3. **Splitting the data** into training, validation, and test sets.
+
+Refer to the corresponding dataset modules (e.g., `datasets/mnist.py`, `datasets/20news.py`) and configuration files for preprocessing scripts and paths.
+
+---
+
+## Running HDTree
+
+### Minimal Reproducible Example
+
+To train HDTree on the MNIST dataset in a single-GPU environment and obtain the final latent embedding, run:
 
 ```bash
 python main.py fit -c=conf/difftree/G_mnist_1gpu.yaml
 ```
 
+- `main.py`: The main entry point for HDTree.
+- `fit`: Specifies the training process.
+- `-c=conf/difftree/G_mnist_1gpu.yaml`: Specifies the configuration file, which includes dataset paths, model hyperparameters, and training strategies.
+
+### Training on Other Datasets or Multi-GPU Environments
+
+To train on other datasets or in multi-GPU environments, update the configuration file (e.g., `conf/difftree/G_*_*.yaml`) accordingly.
+
+---
+
+## References
+
+- For advanced features (e.g., custom datasets or multi-threaded training), refer to the configuration files and source code comments.
+- If you encounter dependency or compatibility issues, ensure your local environment is correctly set up. Check the project’s issues or discussion section for potential solutions.
