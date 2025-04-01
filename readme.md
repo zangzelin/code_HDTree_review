@@ -276,6 +276,8 @@ python main.py fit -c conf/difftree/G_mnist_1gpu.yaml
 
 For validation, you can use the following command:
 
+download the ckpt file from the [Web Drive](https://gofile.me/7794C/Ap8CoaeyN) and put it in the `ckpt` folder.
+
 ```bash
 python main.py validate -c conf/difftree/C_celegan_1gpu.yaml
 python main.py validate -c conf/difftree/C_Weinreb_1gpu.yaml
