@@ -3,7 +3,7 @@ run_name: 'bio' # name of the run
 data:
   data_name: 'bio' # name of the dataset
   num_clusters_data: 11 # number of true clusters in the data (if known), this is used only for evaluation purposes
-  h5ad_path: /root/commusim/data/GSM4185642_stateFate_inVitro.h5ad
+  h5ad_path: /dataset_bio/processed/Weinreb.h5ad
   class_num: 11 # 7
 
 
