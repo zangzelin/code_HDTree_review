@@ -136,24 +136,47 @@ The detail code is shown in 'preprocess/pre_lhco.py'
 
 ## 6. Running HDTree
 
-### Minimal Reproducible Example
+### 6.1 Training Example
 
 To train HDTree on the MNIST dataset in a single-GPU environment and obtain the final latent embedding, run:
 
 ```bash
-python main.py fit -c=conf/difftree/G_mnist_1gpu.yaml
+python main.py fit -c conf/difftree/G_mnist_1gpu.yaml
+```
+
+### 6.2 Validate Example
+
+For validation, you can use the following command:
+
+```bash
+python main.py validate -c conf/difftree/C_celegan_1gpu.yaml
+python main.py validate -c conf/difftree/C_dral_1gpu.yaml
+python main.py validate -c conf/difftree/C_EpitheliaCell_1gpu.yaml
+python main.py validate -c conf/difftree/C_Limb_1gpu.yaml
+python main.py validate -c conf/difftree/C_NatureMethod_1gpu.yaml
+python main.py validate -c conf/difftree/G_fmnist_1gpu.yaml
+python main.py validate -c conf/difftree/G_mnist_1gpu.yaml
+python main.py validate -c conf/difftree/G_News20_1gpu.yaml
+python main.py validate -c conf/difftree/G_omni_1gpu.yaml
 ```
 
 - `main.py`: The main entry point for HDTree.
-- `fit`: Specifies the training process.
-- `-c=conf/difftree/G_mnist_1gpu.yaml`: Specifies the configuration file, which includes dataset paths, model hyperparameters, and training strategies.
+- `validate`: Specifies the training process.
+- `-c ***.ymal`: Specifies the configuration file for the training process.
 
-### Training on Other Datasets or Multi-GPU Environments
+## 8. files of the project
 
-To train on other datasets or in multi-GPU environments, update the configuration file (e.g., `conf/difftree/G_*_*.yaml`) accordingly.
+The project is organized into the following directories:
+
+- `aug`: Contains data augmentation methods.
+- `call_backs`: Contains callback functions for training and validation.
+- `conf`: Configuration files for different datasets and training settings.
+- `conf/difftree`: Configuration files for the HDTree model.
+- `data_model`: Contains the data model and data loading utilities.
+- `eval`: Evaluation metrics and functions.
+- `manifolds`: Contains scoft contrastive learning methods.
+- `model`: Implementation of the HDTree model.
+- `preprocess`: Preprocessing scripts for different datasets.
 
 
-## References
 
-- For advanced features (e.g., custom datasets or multi-threaded training), refer to the configuration files and source code comments.
-- If you encounter dependency or compatibility issues, ensure your local environment is correctly set up. Check the project’s issues or discussion section for potential solutions.
