@@ -33,6 +33,7 @@ bash install.sh
 
 This project supports the following datasets:
 
+<!-- 这里帮我把每个数据集的下载地址贴上 -->
 - MNIST
 - FMINST
 - 20News
@@ -45,7 +46,9 @@ This project supports the following datasets:
 
 Ensure that datasets are placed in the appropriate directory or downloaded to the default directory, as configured in the project’s configuration files.
 
-For example, the MNIST dataset might be organized as follows:
+For example, the all dataset might be organized as follows:
+
+<!-- 这里帮我把每个数据集的下载地址所下载的位置贴上 -->
 
 ```
 datasets/
